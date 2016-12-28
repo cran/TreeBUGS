@@ -3,7 +3,11 @@ printSummary <- function(x, model, ...){
   print(x$call)
   cat("\n")
 
-  cat("Mean MPT parameters:\n")
+  if(model == "betaMPT"){
+    cat("Group-level means of MPT parameters:\n")
+  }else if (model == "traitMPT"){
+    cat("Group-level medians of MPT parameters (probability scale):\n")
+  }
   print(round(x$groupParameters$mean, x$round))
 
   if(model == "betaMPT"){
@@ -14,7 +18,7 @@ printSummary <- function(x, model, ...){
     cat("\nBeta parameters of beta distributions:\n")
     print(round(x$groupParameters$beta, x$round))
   }else if (model == "traitMPT"){
-    cat("\nMean of latent-trait values (probit-scale) across individuals:\n")
+    cat("\nMean/Median of latent-trait values (probit-scale) across individuals:\n")
     print(round(x$groupParameters$mu, x$round))
     cat("\nStandard deviation of latent-trait values (probit scale) across individuals:\n")
     print(round(x$groupParameters$sigma, x$round))
@@ -31,7 +35,9 @@ printSummary <- function(x, model, ...){
 
   if(model == "traitMPT" &&
      nrow(x$groupParameters$rho.matrix) != 1){
-    cat("\nCorrelations of latent-trait values on probit scale:\n")
+    cat("\nCorrelations of latent-trait values on probit scale",
+        "\n (only quantifies the uncertainty with respect to parameter estimation",
+        "\n  not with respect to sample size! See ?correlationPosterior):\n")
     print(round(x$groupParameters$rho, x$round))
     cat("\nCorrelations (posterior mean estimates) in matrix form:\n")
     print(round(x$groupParameters$rho.matrix, x$round))
@@ -41,6 +47,8 @@ printSummary <- function(x, model, ...){
       "Model fit statistics (posterior predictive p-values):\n")
   if(!is.null(x$fitStatistics$overall)){
     print(round(x$fitStatistics$overall, x$round))
+    cat("\nT1 per person:\n")
+    print(round(x$fitStatistics$individual$T1.p, x$round))
   }else{
     cat("Use PPP(fittedModel) to get T1 and T2 posterior predictive checks.\n")
   }
@@ -130,9 +138,9 @@ print.traitMPT <- function(x,  ...){
   cat("Call: \n")
   print(x$call)
   cat("\n")
-  print(round(cbind("Mean(MPT Parameters)" = x$summary$groupParameters$mean[,1],
-                    "Mu(latent-traits)" = x$summary$groupParameters$mu[,1],
-                    "SD(latent-traits)" = x$summary$groupParameters$sigma[,1]),4))
+  print(round(cbind("Group median (probability scale)" = x$summary$groupParameters$mean[,1],
+                    "Group mean/median (latent-probit)" = x$summary$groupParameters$mu[,1],
+                    "Group SD (latent-probit)" = x$summary$groupParameters$sigma[,1]),4))
 
   cat("\nUse 'summary(fittedModel)' or 'plot(fittedModel)' to get a more detailed summary.")
 }

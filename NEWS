@@ -1,3 +1,59 @@
+TreeBUGS 1.0.0 (December 2016)
+===========
+
+* New function correlationPosterior() to estimate the posterior for the population correlation (taking into account the number of participants)
+* Second CRAN release
+
+
+TreeBUGS 0.8.2 (November 2016)
+===========
+
+* New function probitInverse() to get the bivariate transformation of mean and SD in probability space given a normal distribution in probit space
+* Visible function summarizeMCMC() to provide TreeBUGS-specific MCMC summaries
+* priorPredictive() allows to sample group-level parameters
+
+
+TreeBUGS 0.8.1 (November 2016)
+===========
+
+* Zeros-trick by Smith & Batchelder (2010) for betaMPT() implemented (i.e., by using the argument alpha="zero")
+* Parameter constraints result in the same parameter labels for JAGS and C++ samplers (e.g., "b=a=f" will be labeled "b")
+
+
+TreeBUGS 0.8.0 (November 2016)
+===========
+
+* New function withinSubjectsEQN() that replicates an MPT model multiple times with different tree, category, and parameter labels for within-subject factorial designs
+* plotFreq() uses boxplots instead of lines by default
+* Posterior-predictive p-values per participant
+* Bugfix: avoid negative "sigma" and reversed "rho" estimates in traitMPT() due to negative scaling parameters "xi"
+* Bugfix: posteriorPredictive() always sampled data for new participant (=> false T1+T2 posterior predictive checks!)
+
+
+TreeBUGS 0.7.1 (November 2016)
+===========
+
+* New function priorPredictive() to sample data sets from the prior
+* New function plotPrior() to plot prior distributions for group mean, SD, and correlations
+* Posterior predictive samples for new participants
+* Possible to use boxplot in plotFreq()
+* Improved data-generating functions to allow for parameter restrictions
+* Package testing via 'testthat' added
+
+
+TreeBUGS 0.7.0 (November 2016)
+===========
+
+* Possibility to define models directly in R without requiring EQN files (by providing the EQN equations in a character value)
+* New function transformedParameters() to obtain posterior samples of transformed parameters for a fitted model (both on the group and individual level)
+* Argument "transformedParameters" now accepts a path to a text file with transformations (one per line)
+* New argument "posteriorFile" to save fitted model and posterior MCMC samples in RData-file
+* Better compatibility of betaMPTcpp() results with plotting functions
+* Option to plot median or mean estimates in plotParam()
+* Increased stability of extendMPT()
+* Fixed bug in plotFreq() if input is given by a matrix/data.frame
+
+
 TreeBUGS 0.6.2 (September 2016)
 ===========
 
