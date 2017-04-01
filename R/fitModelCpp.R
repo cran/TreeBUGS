@@ -14,7 +14,6 @@ fitModelCpp <- function(type,
 
                         # MCMC stuff:
                         n.iter=20000,
-                        n.adapt = 2000,
                         n.burnin=2000,
                         n.thin=5,
                         n.chains=3,
@@ -44,16 +43,7 @@ fitModelCpp <- function(type,
   mergedTree <- thetaHandling(mergeBranches(mpt.res$Table),
                               restrictions)$mergedTree
 
-  data <- readData(data)
-  if(is.null(colnames(data)) ||
-     all(colnames(data) == paste0("V",1:ncol(data)))){
-    nam <- paste(as.character(mpt.res$cat.names), collapse = ", ")
-    warning("No column names in 'data'. Default order of categories is assumed:\n",
-            nam)
-    colnames(data) <- as.character(mpt.res$cat.names)
-  }else{
-    data <- data[,as.character(mpt.res$cat.names)]
-  }
+  data <- readData(data, mpt = mpt.res)
   N <- nrow(data)
   covData <- covDataRead(covData, N)
 
@@ -94,7 +84,8 @@ fitModelCpp <- function(type,
     tmp <- with(sim, cbind(mean, sd, alph, bet, tt ))
     if(S == 1)
       colnames(tmp)[1:4] <- c("mean","sd","alph","bet")
-    mcmc(tmp, start = n.burnin+1, end=n.iter, thin = n.thin)
+    # mcmc(tmp, start = n.burnin+1, end=n.iter, thin = n.thin)
+    window(mcmc(tmp), start = n.burnin+1, thin = n.thin)
   }
 
   simSimpleMPT <- function(idx){
@@ -118,7 +109,8 @@ fitModelCpp <- function(type,
                  dimnames=list(NULL, paste0("theta[",c(t(tnames)),"]")))
     tmp <- with(sim, cbind(means, sds, tt ))
 
-    mcmc(tmp, start = n.burnin+1, end=n.iter, thin = n.thin)
+    # mcmc(tmp, start = n.burnin+1, end=n.iter, thin = n.thin)
+    window(mcmc(tmp), start = n.burnin+1, thin = n.thin)
   }
 
 

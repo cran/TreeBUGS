@@ -42,7 +42,11 @@
 #' @author Daniel Heck, Denis Arnold, Nina Arnold
 #' @references Moshagen, M. (2010). multiTree: A computer program for the analysis of multinomial processing tree models. Behavior Research Methods, 42, 42-54.
 #' @export
-readEQN <- function(file, restrictions=NULL, paramOrder = FALSE, parse=FALSE){
+readEQN <- function(file,
+                    restrictions=NULL,
+                    paramOrder = FALSE,
+                    parse=FALSE){
+  if(missing(restrictions)) restrictions <- NULL
 
   isPath <- !grepl("\n", x=file, ignore.case = TRUE)
   if(!isPath){
@@ -66,7 +70,11 @@ readEQN <- function(file, restrictions=NULL, paramOrder = FALSE, parse=FALSE){
   TreeRestr <- thetaHandling(Tree, restrictions)
 
   allParameters <- getParameter(Tree)
-  freeParameters <- subset(TreeRestr$SubPar, !duplicated(TreeRestr$SubPar$theta))$Parameter
+  suppressWarnings(
+    free <- !duplicated(TreeRestr$SubPar$theta) &
+      is.na(as.numeric(TreeRestr$SubPar$Parameter))
+  )
+  freeParameters <- subset(TreeRestr$SubPar, free)$Parameter
 
   S <- length(freeParameters)
   numCat <- length(unique(Tree$Category))
