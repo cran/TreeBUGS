@@ -36,6 +36,7 @@ callingSampler <- function(model,
                            n.thin=5,
                            n.chains=3,
                            autojags=NULL,
+                           seed = sample.int(1e10, 1),
                            # savetable = NULL,
                            ...){
 
@@ -151,41 +152,25 @@ callingSampler <- function(model,
     ini
   }
   inits.list <- replicate(n.chains, inits(), simplify=FALSE)
-  for(i in 1:length(inits.list))
+  for(i in 1:length(inits.list)){
     inits.list[[i]]$.RNG.name <- c("base::Wichmann-Hill",
                                    "base::Marsaglia-Multicarry",
                                    "base::Super-Duper",
                                    "base::Mersenne-Twister")[1+ (i-1)%% 4]
-  n.samples <- ceiling((n.iter-n.burnin)/n.thin)
-  choice <- ""
-  if(n.samples > 10000){
-    choice <- readline(prompt =
-                         paste0("\n############ Warning ################\n",
-                                "Your present MCMC settings for n.burnin/n.iter/n.thin\n",
-                                "imply that more than 10,000 samples are stored per parameter per chain.\n",
-                                "This might result in problems due to an overload of your computers memory (RAM).\n",
-                                "If you are sure you want to continue, press <RETURN>."))
+    inits.list[[i]]$.RNG.seed <- seed + i
   }
-  if(choice != "")
-    stop("Model fitting terminated by user.")
-
+  n.samples <- ceiling((n.iter-n.burnin)/n.thin)
+  if(n.samples > 30000)
+    warning("Note: Your present MCMC settings for n.burnin/n.iter/n.thin\n",
+            "      imply that more than 30,000 samples are stored per parameter per chain.\n",
+            "      This might result in problems due to an overload of your computers memory (RAM).")
 
   data.list <-  lapply(data, get, envir=environment())
   names(data.list) <- data
-  samples <- run.jags(model = modelfile,
-                      monitor=c(parametervector, "deviance"),
-                      data=data.list,
-                      n.chains=n.chains,
-                      inits=inits.list,
-                      burnin=n.burnin,
-                      adapt=n.adapt,
-                      sample=n.samples,
-                      thin=n.thin,
-                      modules=c("dic","glm"),
-                      summarise=FALSE,
-                      method="parallel",
-                      ...)
-
+  samples <- run.jags(model = modelfile, monitor=c(parametervector, "deviance"),
+                      data=data.list, inits=inits.list, n.chains=n.chains,
+                      burnin=n.burnin, adapt=n.adapt,  sample=n.samples, thin=n.thin,
+                      modules=c("dic","glm"), summarise=FALSE, method="parallel", ...)
 
   if(!is.null(autojags)){
     cat("#####################################\n

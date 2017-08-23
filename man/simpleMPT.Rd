@@ -4,16 +4,16 @@
 \alias{simpleMPT}
 \title{C++ Sampler for Standard (Nonhierarchical) MPT Models}
 \usage{
-simpleMPT(eqnfile, data, restrictions, n.iter = 20000, n.burnin = 2000,
-  n.thin = 5, n.chains = 3, ppp = 0, alpha = 1, beta = 1, parEstFile,
-  posteriorFile)
+simpleMPT(eqnfile, data, restrictions, n.iter = 2000, n.burnin = 500,
+  n.thin = 3, n.chains = 3, ppp = 0, alpha = 1, beta = 1, parEstFile,
+  posteriorFile, cores = 1)
 }
 \arguments{
-\item{eqnfile}{The (full path to the) file that specifies the MPT model (standard .eqn syntax). Note that category labels must start with a letter (different to multiTree) and match the column names of \code{data}. Alternatively, the EQN-equations can be provided within R as a character value (cf. \code{\link{readEQN}})}
+\item{eqnfile}{The (full path to the) file that specifies the MPT model (standard .eqn syntax). Note that category labels must start with a letter (different to multiTree) and match the column names of \code{data}. Alternatively, the EQN-equations can be provided within R as a character value (cf. \code{\link{readEQN}}). Note that the first line of an .eqn-file is reserved for comments and always ignored.}
 
 \item{data}{The (full path to the) csv file with the data (comma separated; category labels in first row). Alternatively: a data frame or matrix (rows=individuals, columns = individual category frequencies, category labels as column names)}
 
-\item{restrictions}{Specifies which parameters should be (a) constant (e.g., \code{"a=b=.5"}) or (b) constrained to be identical (e.g., \code{"Do=Dn"}) or (c) treated as fixed effects (i.e., identical for all participants; \code{"a=b=FE"}). Either given as the path to a text file with restrictions per row or as a list of restrictions, e.g., \code{list("D1=D2","g=0.5")}}
+\item{restrictions}{Specifies which parameters should be (a) constant (e.g., \code{"a=b=.5"}) or (b) constrained to be identical (e.g., \code{"Do=Dn"}) or (c) treated as fixed effects (i.e., identical for all participants; \code{"a=b=FE"}). Either given as the path to a text file with restrictions per row or as a list of restrictions, e.g., \code{list("D1=D2","g=0.5")}. Note that numbers in .eqn-equations (e.g., \code{d*(1-g)*.50}) are directly interpreted as equality constraints.}
 
 \item{n.iter}{Number of iterations per chain (including burnin samples). See \code{\link[runjags]{run.jags}} for details.}
 
@@ -32,6 +32,8 @@ simpleMPT(eqnfile, data, restrictions, n.iter = 20000, n.burnin = 2000,
 \item{parEstFile}{Name of the file to with the estimates should be stored (e.g., "parEstFile.txt")}
 
 \item{posteriorFile}{path to RData-file where to save the model including MCMC posterior samples (an object named \code{fittedModel}; e.g., \code{posteriorFile="mcmc.RData"})}
+
+\item{cores}{number of CPUs to be used}
 }
 \description{
 Fast Gibbs sampler in C++ that is tailored to the standard MPT model (i.e., fixed-effects, non-hierarchical MPT: assumes separate parameters if multiple data sets are supplied).

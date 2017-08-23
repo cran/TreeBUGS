@@ -14,7 +14,7 @@ The core functions either fit a Beta-MPT model (\code{\link{betaMPT}};Smith & Ba
 Detailed explanations and examples can be found in the package vignette, accessible via \code{vignette("TreeBUGS")}
 }
 \references{
-Heck*, D. W., Arnold*, N. R., & Arnold, D. (2017). TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling. Behavior Research Methods, in press.
+Heck*, D. W., Arnold*, N. R., & Arnold, D. (in press). TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling. Behavior Research Methods.
 
 Klauer, K. C. (2010). Hierarchical multinomial processing tree models: A latent-trait approach. Psychometrika, 75, 70-98.
 

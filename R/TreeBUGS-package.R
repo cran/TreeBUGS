@@ -10,17 +10,17 @@
 #' @importFrom runjags run.jags extract autoextend.jags extend.jags
 #run.jags  summary.runjags extract autorun.jags autoextend.jags
 #' @importFrom coda gelman.diag effectiveSize as.mcmc.list as.mcmc
-#' @importFrom utils read.csv write.table write.csv capture.output
+#' @importFrom utils read.csv write.table write.csv capture.output count.fields
 #' @importFrom graphics axis plot points  segments abline boxplot curve hist lines par
 #' @importFrom grDevices rainbow adjustcolor
-#' @importFrom stats pnorm rnorm runif sd qnorm dnorm dbeta quantile rWishart ave pchisq window
+#' @importFrom stats pnorm rnorm runif sd qnorm dnorm dbeta quantile rWishart ave pchisq window rbinom var
 #' @importFrom parallel parSapply
 #' @importFrom Rcpp evalCpp sourceCpp
 #' @importFrom MASS fitdistr
 #' @useDynLib "TreeBUGS", .registration=TRUE
 #'
 #' @references
-#' Heck*, D. W., Arnold*, N. R., & Arnold, D. (2017). TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling. Behavior Research Methods, in press.
+#' Heck*, D. W., Arnold*, N. R., & Arnold, D. (in press). TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling. Behavior Research Methods.
 #'
 #' Klauer, K. C. (2010). Hierarchical multinomial processing tree models: A latent-trait approach. Psychometrika, 75, 70-98.
 #'

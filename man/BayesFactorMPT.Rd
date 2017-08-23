@@ -4,21 +4,23 @@
 \alias{BayesFactorMPT}
 \title{Bayes Factors for Simple (Nonhierarchical) MPT Models}
 \usage{
-BayesFactorMPT(models, resample = 10000, scale = 0.1, batches = 10,
-  store = FALSE, nCPU = 1)
+BayesFactorMPT(models, dataset = 1, resample, batches = 5, scale = 1,
+  store = FALSE, cores = 1)
 }
 \arguments{
 \item{models}{list of models fitted with \code{\link{simpleMPT}}, e.g., \code{list(mod1, mod2)}}
 
+\item{dataset}{for which data set should Bayes factors be computed?}
+
 \item{resample}{how much parameter posterior samples should be resampled per model}
 
-\item{scale}{scaling factor for the posterior approximation of the posterior samples}
+\item{batches}{number of batches. Used to compute a standard error of the estimate.}
 
-\item{batches}{number of batches to compute standard error}
+\item{scale}{how much should posterior-beta approximations be downscaled to get fatter importance-sampling density}
 
 \item{store}{whether to save parameter samples}
 
-\item{nCPU}{number of CPUs used}
+\item{cores}{number of CPUs used}
 }
 \description{
 Computes Bayes factors for simple (fixed-effects, nonhierarchical) MPT models with beta distributions as priors on the parameters.
