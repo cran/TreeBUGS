@@ -27,11 +27,11 @@ betweenSubjectMPT <- function(model1, model2,
 
   ################ check input
 
-  if(class(model1) != class(model2) ||
-     ! class(model1) %in% c("betaMPT","traitMPT") ||
-     ! class(model2) %in% c("betaMPT","traitMPT"))
-    stop("The two models 'model1' and 'model2' must be hierarchical MPT models",
-         "\n  of the same class (both traitMPT or betaMPT).")
+  if(#class(model1) != class(model2) ||
+     ! class(model1) %in% c("betaMPT","traitMPT", "simpleMPT") ||
+     ! class(model2) %in% c("betaMPT","traitMPT", "simpleMPT"))
+    stop("The two models 'model1' and 'model2' must be (hierarchical) MPT models",
+         "\n  of the class (both traitMPT / betaMPT / simpleMPT).")
   if(missing(par1) || length(par1) != 1 || !is.character(par1))
     stop("'par1' must be a single par1 label!")
   if(length(par2) != 1 || !is.character(par2))
@@ -68,8 +68,9 @@ betweenSubjectMPT <- function(model1, model2,
     warning("Different numbers of iterations for both models. Some iterations are dropped!")
     nn <- min(nrow(pp1[[1]]), nrow(pp2[[1]]))
     for(mm in 1:length(pp1)){
-      pp1[[mm]] <- pp1[[mm]][,1:nn]
-      pp2[[mm]] <- pp2[[mm]][,1:nn]
+      round(seq(1, nrow(pp1[[mm]]), length.out = nn))
+      pp1[[mm]] <- pp1[[mm]][round(seq(1, nrow(pp1[[mm]]), length.out = nn)),,drop = FALSE]
+      pp2[[mm]] <- pp2[[mm]][round(seq(1, nrow(pp2[[mm]]), length.out = nn)),,drop = FALSE]
     }
   }
 
