@@ -1,12 +1,16 @@
-
-#' Get Mean Group Estimates
+#' Get Mean Parameters per Group
 #'
-#' For hierarchical latent-trait MPT models with discrete predictor variables.
+#' For hierarchical latent-trait MPT models with discrete predictor variables
+#' as fitted with \code{traitMPT(..., predStructure = list("f"))}.
+#'
 #' @param traitMPT a fitted \code{\link{traitMPT}} model
-#' @param factor whether to get group estimates for all combinations of factor levels (default) or only for specific factors (requires the names of the covariates in covData)
-# @param computeT1 whether to compute posterior predictive checks per group by using the T1 statistic (similar to chi square)
+#' @param factor whether to get group estimates for all combinations of factor
+#'     levels (default) or only for specific factors (requires the names of the covariates in covData)
 #' @param probit whether to use probit scale or probability scale
 #' @param file filename to export results in .csv format (e.g., \code{file="fit_group.csv"})
+#' @param mcmc if \code{TRUE}, the raw MCMC samples for the group means are returned
+#'    as an \code{\link[coda]{mcmc.list}} object. This allows pairwise tests of group means
+#'    (see \code{\link{transformedParameters}}).
 #'
 #' @examples
 #' \dontrun{
@@ -16,7 +20,8 @@
 #' @seealso \code{\link{getParam}} for parameter estimates
 #' @author Daniel Heck
 #' @export
-getGroupMeans <- function(traitMPT, factor="all", probit=FALSE, file = NULL){
+getGroupMeans <- function(traitMPT, factor="all", probit=FALSE,
+                          file = NULL, mcmc = FALSE){
 
   if(is.null(traitMPT$mptInfo$predTable))
     stop("Model does not contain discrete predictors.")
@@ -35,13 +40,14 @@ getGroupMeans <- function(traitMPT, factor="all", probit=FALSE, file = NULL){
   S <- length(uniqueNames)
 
   summaryMat <- matrix(NA,0, 6)
-  cnt <- 0
 
+  mcmc.list <- mcmc.list(lapply(traitMPT$runjags$mcmc,
+                                function(x) mcmc(matrix(NA, niter(x), 0))))
   for(s in 1:S){
     # parameter s of S
     select <- grep(paste0("mu",ifelse(S==1, "",paste0("[",s,"]"))),
                    varnames(traitMPT$runjags$mcmc), fixed=TRUE)
-    muPosterior <- do.call("rbind", traitMPT$runjags$mcmc[,select]) #traitMPT$mcmc$BUGSoutput$sims.list[["mu"]][,s,drop=FALSE]
+    muPosterior <- do.call("rbind", traitMPT$runjags$mcmc[,select])
 
     # select only relevant predictors
     predTable <- traitMPT$mptInfo$predTable
@@ -50,7 +56,7 @@ getGroupMeans <- function(traitMPT, factor="all", probit=FALSE, file = NULL){
                           predTable$theta == s &
                           predTable$Covariate %in% includeFactors)
 
-    if(nrow(predTable) >0){
+    if(nrow(predTable) > 0){
       factors <- unique(as.character(predTable$Covariate))
       combinations <-  expand.grid(facLevelNames[factors])
       combNames <- sapply(combinations, as.character)
@@ -61,9 +67,8 @@ getGroupMeans <- function(traitMPT, factor="all", probit=FALSE, file = NULL){
         parnam <- as.character(subset(predTable, predTable$Covariate == factors[j])[,"covPar"])
         if(length(facLevelNames[[factors[j]]]) >1)
            grep.est <- setdiff(grep(parnam, varnames(traitMPT$runjags$mcmc)),
-                               grep("SD_", varnames(traitMPT$runjags$mcmc)))#paste0(parnam, "[",1:length(facLevelNames[[factors[j]]]),"]")
+                               grep("SD_", varnames(traitMPT$runjags$mcmc)))
         facPosterior[[j]] <- do.call("rbind", traitMPT$runjags$mcmc[,grep.est])
-        #traitMPT$mcmc$BUGSoutput$sims.list[[parnam, drop=FALSE]]
         colnames(facPosterior[[j]]) <-  facLevelNames[[factors[j]]]
       }
 
@@ -82,13 +87,17 @@ getGroupMeans <- function(traitMPT, factor="all", probit=FALSE, file = NULL){
           samples <- pnorm(samples)
         }
 
+        label <- paste0(uniqueNames[[s]],"_", paste0(paste0(colnames(combinations),
+                                                          "[",combNames[i,], "]"), collapse="_"))
+        newMat <- rbind(c(Mean = mean(samples), SD = sd(samples),
+                          quantile(samples, c(.025,.5,.975)),
+                          "p(one-sided vs. overall)"= pval))
+        rownames(newMat) <- label
+        summaryMat <- rbind(summaryMat, newMat)
 
-        summaryMat <- rbind(summaryMat, c(Mean = mean(samples), SD = sd(samples),
-                                          quantile(samples, c(.025,.5,.975)),
-                                          "p(one-sided vs. overall)"= pval))
-        rownames(summaryMat)[cnt <- cnt+1] <- paste0(uniqueNames[s],"_", paste0(paste0(
-                                         colnames(combinations), "[",combNames[i,], "]"), collapse="_"))
-
+        rownames(samples) <- rep(label, nrow(samples))
+        for (c in 1:nchain(mcmc.list))
+          mcmc.list[[c]] <- cbind(mcmc.list[[c]] , t(samples)[,c,drop = FALSE])
       }
     }
 
@@ -98,5 +107,10 @@ getGroupMeans <- function(traitMPT, factor="all", probit=FALSE, file = NULL){
     write.csv(summaryMat, file = file)
   }
 
-  summaryMat
+  mcmc.list <- mcmc.list(lapply(mcmc.list, mcmc))
+  if (mcmc)
+    return(mcmc.list)
+  else
+    summaryMat
 }
+

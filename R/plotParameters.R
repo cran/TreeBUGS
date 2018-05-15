@@ -8,7 +8,8 @@
 #' @param x a fitted Beta or latent-trait MPT model
 #' @param includeIndividual whether to plot individual estimates
 #' @param addLines whether to connect individual parameter estimates by lines
-#' @param estimate type of point estimates for group-level and individual parameters (either \code{"mean"} or \code{"median"})
+#' @param estimate type of point estimates for group-level and individual parameters
+#'     (either \code{"mean"} or \code{"median"})
 #' @param select character vector of parameters to be plotted (e.g., \code{select = c("d", "g")}. Can be used to plot subsets of parameters and change the order of parameters.
 #' @param ... further arguments passed to the standard \code{\link{plot}} function
 #'
@@ -21,12 +22,8 @@
 #'           select = c("d1", "d2"))
 #' }
 #' @export
-plotParam <- function(x,
-                      includeIndividual = TRUE,
-                      addLines = FALSE,
-                      estimate = "mean",
-                      select = "all",
-                      ...){
+plotParam <- function(x, includeIndividual = TRUE, addLines = FALSE,
+                      estimate = "mean", select = "all", ...){
 
   stat <- ifelse(estimate == "median", "50%", "Mean")
   par.group <- x$summary$groupParameters$mean
@@ -57,9 +54,9 @@ plotParam <- function(x,
   if(includeIndividual){
     for(i in 1:N){
       if (addLines){
-        lines(1:S, par.ind[select,i,stat],
+        lines(1:S + .05, par.ind[select,i,stat],
               col = adjustcolor(col = "black", alpha.f = .5))
-        points(1:S, par.ind[select,i,stat], cex=.9, pch=16,
+        points(1:S + .05, par.ind[select,i,stat], cex=.9, pch=16,
               col = adjustcolor(col = "black", alpha.f = .5))
       } else {
         points(1:S + seq(-.2,.2, length.out = N)[i],

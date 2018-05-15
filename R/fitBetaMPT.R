@@ -55,7 +55,9 @@
 #' @param n.iter Number of iterations per chain (including burnin samples).
 #'     See \code{\link[runjags]{run.jags}} for details.
 #' @param n.adapt number of adaption samples to adjust MCMC sampler in JAGS.
-#'     The sampler will be more efficient if it is tuned well.
+#'     The sampler will be more efficient if it is tuned well. However, MCMC
+#'     sampling will still give correct results even if the warning appears:
+#'     "Adaptation incomplete." (this just means that sampling efficiency could be better).
 #' @param n.burnin Number of samples for burnin (samples will not be stored and removed from n.iter)
 #' @param n.thin Thinning rate.
 #' @param n.chains number of MCMC chains (sampled in parallel).
@@ -69,11 +71,17 @@
 #' @param parEstFile Name of the file to with the estimates should be stored (e.g., "parEstFile.txt")
 #' @param posteriorFile path to RData-file where to save the model including MCMC
 #'     posterior samples (an object named \code{fittedModel}; e.g., \code{posteriorFile="mcmc.RData"})
-#' @param autojags if provided (as an empty list or with arguments passed to
-#'     \link[runjags]{autorun.jags}), JAGS runs repeatedly until the MCMC chains
-#'     converges . E.g., use \code{list(max.time="30m")} to restrict sampling
-#'     to 30 minutes (similarly for hours, days, and weeks)
-#' @param ... Arguments to be passed to the JAGS sampling function (i.e., to \code{\link[runjags]{run.jags}}.
+#' @param autojags JAGS first fits the MPT model as usual and then
+#'     draws MCMC samples repeatedly until convergence. For this, the function
+#'     \code{autoextend.jags} is used with the arguments provided in \code{autojags}
+#'     (this can be an empty list, in which case the defaults are used).
+#'     Possible arguments for \code{autoextend.jags} are:
+#'     \code{list(startburnin = 1000, startsample = 5000, adapt = 2000, max.time="30m")}
+#'     (the last of these arguments restricts sampling  to 30 minutes,
+#'     see  \link[runjags]{autoextend.jags}).
+#' @param ... further rguments to be passed to the JAGS sampling function
+#'     (i.e., to \code{\link[runjags]{run.jags}}. Note that reproducible results are obtained
+#'     by setting a random seed before fitting a model (i.e., \code{set.seed(12345)} ).
 #'
 #'
 #' @details
@@ -94,11 +102,16 @@
 #'                        \code{fittedModel$runjags$mcmc} is a \code{mcmc.list}
 #'                        as used by the coda package (\link[coda]{mcmc})
 #' }
-#' @author Daniel Heck, Nina R. Arnold, Denis Arnold,
+#' @author Daniel W. Heck, Nina R. Arnold, Denis Arnold
+#'
 #' @references
-#' Smith, J. B., & Batchelder, W. H. (2010). Beta-MPT: Multinomial processing
-#' tree models for addressing individual differences.
-#' Journal of Mathematical Psychology, 54, 167-183.
+#' Heck, D. W., Arnold, N. R., & Arnold, D. (2018).
+#' TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling.
+#' \emph{Behavior Research Methods, 50}, 264–284.
+#'
+#' Smith, J. B., & Batchelder, W. H. (2010).
+#' Beta-MPT: Multinomial processing tree models for addressing individual differences.
+#' \emph{Journal of Mathematical Psychology, 54}, 167-183.
 #'
 #' @examples
 #' \dontrun{

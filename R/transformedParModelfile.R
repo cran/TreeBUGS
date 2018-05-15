@@ -7,8 +7,7 @@
 ##### deprecated: model: either "betaMPT" or "traitMPT"
 # thetaNames: matrix which assigns parameter labels (first column) to the parameter index (second column)
 # transformedParameters: either string with file location or list with transformed parameters
-getTransformed <- function (thetaNames,
-                            transformedParameters=NULL,
+getTransformed <- function (thetaNames, transformedParameters=NULL,
                             mergeString=TRUE){
 
   if(is.null(transformedParameters)){
@@ -23,24 +22,23 @@ getTransformed <- function (thetaNames,
   selCriticalName <- pars %in% c(thetaNames,
                                  "mu", "sd","mu", "sigma",
                                  "beta","alpha", "rho","theta","xi")
-  if(any(selCriticalName)){
+  if (any(selCriticalName)){
     error <- paste0("Use different label for transformed parameters:\n  ",
                     paste(pars[selCriticalName], collapse=", "))
     stop(error)
   }
 
-  if(length(unique(pars)) != S){
+  if (length(unique(pars)) != S){
     stop("The argument 'transformedParameters' does not specifcy unique names for the transformed parameters")
   }
 
+  index_by_length <- order(sapply(thetaNames$Parameter, nchar), decreasing = TRUE)
   modelstring <- ifelse(mergeString, "### Transformed Parameters (on group level) ###\n", "")
   for(i in 1:S){
     replacedString <- splitEqual[[i]][2]
     for(k in 1:nrow(thetaNames)){
-      replacedString <- gsub(pattern = thetaNames[k,1],
-                             replacement = paste0(
-                               "XXXXXXXXXXXXXX[",
-                               thetaNames[k,2],"]"),
+      replacedString <- gsub(pattern = paste0("\\b",thetaNames[index_by_length[k],1],"\\b"),
+                             replacement = paste0("XXXXXXXXXXXXXX[",thetaNames[index_by_length[k],2],"]"),
                              x = replacedString)
     }
     # test whether transformed parameters are proper function: (not working at the moment)
@@ -63,7 +61,9 @@ getTransformed <- function (thetaNames,
   if(mergeString)
     modelstring <- paste(modelstring, "\n")
   modelstring <- gsub("XXXXXXXXXXXXXX","mean", modelstring)
-  return(list(transformedParameters=pars, modelstring=modelstring))
+
+  list(transformedParameters=pars,
+       modelstring=modelstring)
 }
 
 

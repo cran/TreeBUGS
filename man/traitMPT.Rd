@@ -101,7 +101,9 @@ See details below.}
 See \code{\link[runjags]{run.jags}} for details.}
 
 \item{n.adapt}{number of adaption samples to adjust MCMC sampler in JAGS.
-The sampler will be more efficient if it is tuned well.}
+The sampler will be more efficient if it is tuned well. However, MCMC
+sampling will still give correct results even if the warning appears:
+"Adaptation incomplete." (this just means that sampling efficiency could be better).}
 
 \item{n.burnin}{Number of samples for burnin (samples will not be stored and removed from n.iter)}
 
@@ -123,12 +125,18 @@ Default is to write this information to the tempdir as required by CRAN standard
 \item{posteriorFile}{path to RData-file where to save the model including MCMC
 posterior samples (an object named \code{fittedModel}; e.g., \code{posteriorFile="mcmc.RData"})}
 
-\item{autojags}{if provided (as an empty list or with arguments passed to
-\link[runjags]{autorun.jags}), JAGS runs repeatedly until the MCMC chains
-converges . E.g., use \code{list(max.time="30m")} to restrict sampling
-to 30 minutes (similarly for hours, days, and weeks)}
+\item{autojags}{JAGS first fits the MPT model as usual and then
+draws MCMC samples repeatedly until convergence. For this, the function
+\code{autoextend.jags} is used with the arguments provided in \code{autojags}
+(this can be an empty list, in which case the defaults are used).
+Possible arguments for \code{autoextend.jags} are:
+\code{list(startburnin = 1000, startsample = 5000, adapt = 2000, max.time="30m")}
+(the last of these arguments restricts sampling  to 30 minutes,
+see  \link[runjags]{autoextend.jags}).}
 
-\item{...}{Arguments to be passed to the JAGS sampling function (i.e., to \code{\link[runjags]{run.jags}}.}
+\item{...}{further rguments to be passed to the JAGS sampling function
+(i.e., to \code{\link[runjags]{run.jags}}. Note that reproducible results are obtained
+by setting a random seed before fitting a model (i.e., \code{set.seed(12345)} ).}
 }
 \value{
 a list of the class \code{traitMPT} with the objects:
@@ -208,25 +216,33 @@ summary(fit)
 }
 }
 \references{
-Gelman, A. (2006). Prior distributions for variance parameters in hierarchical models
-(comment on article by Browne and Draper). Bayesian Analysis, 1(3), 515-534.
+Heck, D. W., Arnold, N. R., & Arnold, D. (2018).
+TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling.
+\emph{Behavior Research Methods, 50}, 264–284.
 
-Klauer, K. C. (2010).
-Hierarchical multinomial processing tree models: A latent-trait approach.
-Psychometrika, 75, 70-98.
+Gelman, A. (2006). Prior distributions for variance parameters in hierarchical models
+(comment on article by Browne and Draper).
+\emph{Bayesian Analysis, 1}, 515-534.
+
+Heck, D. W., Arnold, N. R., & Arnold, D. (2018).
+TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling.
+\emph{Behavior Research Methods, 50}, 264–284.
+
+Klauer, K. C. (2010). Hierarchical multinomial processing tree models: A latent-trait approach.
+\emph{Psychometrika, 75}, 70-98.
 
 Matzke, D., Dolan, C. V., Batchelder, W. H., & Wagenmakers, E.-J. (2015).
 Bayesian estimation of multinomial processing tree models with heterogeneity in participants and items.
-Psychometrika, 80, 205-235.
+\emph{Psychometrika, 80}, 205-235.
 
 Rouder, J. N., Morey, R. D., Speckman, P. L., & Province, J. M. (2012).
 Default Bayes factors for ANOVA designs.
-Journal of Mathematical Psychology, 56, 356-374.
+\emph{Journal of Mathematical Psychology, 56}, 356-374.
 
 Rouder, J. N., & Morey, R. D. (2012).
 Default Bayes Factors for Model Selection in Regression.
-Multivariate Behavioral Research, 47, 877-903.
+\emph{Multivariate Behavioral Research, 47}, 877-903.
 }
 \author{
-Daniel Heck, Denis Arnold, Nina R. Arnold
+Daniel W. Heck, Denis Arnold, Nina R. Arnold
 }
