@@ -1,6 +1,6 @@
 Package: TreeBUGS
-Version: 1.4.0
-Date: 2018-05-14
+Version: 1.4.1
+Date: 2018-12-18
 Title: Hierarchical Multinomial Processing Tree Modeling
 Authors@R: c(person("Daniel W.", "Heck", email="heck@uni-mannheim.de", role=c("aut","cre")),
              person("Nina R.", "Arnold", email="arnold@uni-mannheim.de", role = c("aut","dtc")),
@@ -14,9 +14,9 @@ Maintainer: Daniel W. Heck <heck@uni-mannheim.de>
 Depends: R (>= 3.0.0)
 Imports: Rcpp (>= 0.12.6), runjags, stats, graphics, utils, grDevices,
         coda, parallel, rjags, MASS, hypergeo, logspline
-Suggests: knitr, testthat
+Suggests: knitr, testthat, R.rsp
 LinkingTo: Rcpp, RcppArmadillo
-VignetteBuilder: knitr
+VignetteBuilder: knitr, R.rsp
 NeedsCompilation: yes
 SystemRequirements: JAGS (http://mcmc-jags.sourceforge.net)
 Description: User-friendly analysis of hierarchical multinomial processing tree (MPT) 
@@ -33,8 +33,8 @@ Description: User-friendly analysis of hierarchical multinomial processing tree 
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://github.com/denis-arnold/TreeBUGS
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 LazyData: TRUE
-Packaged: 2018-05-15 10:30:47 UTC; Daniel
+Packaged: 2018-12-18 16:08:43 UTC; Daniel
 Repository: CRAN
-Date/Publication: 2018-05-15 12:18:04 UTC
+Date/Publication: 2018-12-18 17:10:17 UTC

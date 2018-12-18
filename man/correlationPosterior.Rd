@@ -4,8 +4,9 @@
 \alias{correlationPosterior}
 \title{Posterior Distribution for Correlations}
 \usage{
-correlationPosterior(fittedModel, r, N, kappa = 1, ci = 0.95, M = 1000,
-  precision = 0.005, maxiter = 10000, plot = TRUE, nCPU = 4)
+correlationPosterior(fittedModel, r, N, kappa = 1, ci = 0.95,
+  M = 1000, precision = 0.005, maxiter = 10000, plot = TRUE,
+  nCPU = 4)
 }
 \arguments{
 \item{fittedModel}{a fitted \link{betaMPT} or \link{traitMPT} model with covariates
@@ -51,9 +52,10 @@ population correlation due to sample size
 }
 \examples{
 # test effect of number of participants:
+set.seed(123)
 cors <- rbeta(50, 100, 70)
-correlationPosterior(r=cors, N=10, nCPU=1)
-correlationPosterior(r=cors, N=100, nCPU=1)
+correlationPosterior(r = cors, N = 10, nCPU = 1)
+correlationPosterior(r = cors, N = 100, nCPU = 1)
 
 }
 \references{
