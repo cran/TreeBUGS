@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta name="author" content="Daniel W. Heck, Nina R. Arnold, &amp; Denis Arnold" />
 
-<meta name="date" content="2019-04-04" />
+<meta name="date" content="2019-12-04" />
 
 <title>TreeBUGS: Extended Modeling Possibilities</title>
 
@@ -37,7 +37,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -96,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -303,7 +303,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">TreeBUGS: Extended Modeling Possibilities</h1>
 <h4 class="author">Daniel W. Heck, Nina R. Arnold, &amp; Denis Arnold</h4>
-<h4 class="date">2019-04-04</h4>
+<h4 class="date">2019-12-04</h4>
 
 
 
@@ -326,14 +326,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li>No correlations are sampled for variables that serve as predictor</li>
 </ul>
 <p>Overall, the code could look like this:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">fitMPT &lt;-<span class="st"> </span><span class="kw">traitMPT</span>(</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">    <span class="dt">eqnfile =</span> <span class="st">&quot;2htm.txt&quot;</span>, </a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">    <span class="dt">data =</span> <span class="st">&quot;data_ind.csv&quot;</span>,   </a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">    <span class="dt">restrictions =</span> <span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>, <span class="st">&quot;g=.5&quot;</span>),  </a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">    <span class="dt">covData =</span> <span class="st">&quot;data_covariates.csv&quot;</span>, </a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">    <span class="dt">corProbit =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">    <span class="dt">predStructure =</span> <span class="kw">list</span>(<span class="st">&quot;Do ; IQ&quot;</span>), <span class="co"># IQ as predictor for Do=Dn</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">    ...)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">fitMPT &lt;-<span class="st"> </span><span class="kw">traitMPT</span>(</a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="dt">eqnfile =</span> <span class="st">&quot;2htm.txt&quot;</span>, </a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">data =</span> <span class="st">&quot;data_ind.csv&quot;</span>,   </a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">restrictions =</span> <span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>, <span class="st">&quot;g=.5&quot;</span>),  </a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">covData =</span> <span class="st">&quot;data_covariates.csv&quot;</span>, </a>
+<a class="sourceLine" id="cb1-6" title="6">    <span class="dt">corProbit =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="dt">predStructure =</span> <span class="kw">list</span>(<span class="st">&quot;Do ; IQ&quot;</span>), <span class="co"># IQ as predictor for Do=Dn</span></a>
+<a class="sourceLine" id="cb1-8" title="8">    ...)</a></code></pre></div>
 <p>After fitting the model, the results are summarized by <code>summary(fitMPT)</code>.</p>
 </div>
 <div id="b-including-discrete-factors-in-a-latent-trait-mpt-model" class="section level3">
@@ -349,22 +349,22 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li>The order of <code>predType</code> has to match the column order of <code>covData</code></li>
 </ul>
 <p>Note that the same parameter covariance structure is assumed in each group. Given that this assumtion holds, it might result in more reliable parameter estimates than specifying a separate MPT tree for each condition (and thus assuming a separate parameter covariance matrix in each group). An example might be:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fitMPT &lt;-<span class="st"> </span><span class="kw">traitMPT</span>(<span class="dt">eqnfile =</span> <span class="st">&quot;2htm.txt&quot;</span>, </a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">data =</span> <span class="st">&quot;data_ind.csv&quot;</span>,   </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">covData =</span> <span class="st">&quot;data_covariates.csv&quot;</span>, </a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">predStructure =</span> <span class="kw">list</span>(<span class="st">&quot;Do ; factor1&quot;</span>, </a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">                         <span class="st">&quot;Dn ; factor2&quot;</span>), <span class="co"># discrete factors</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">predType =</span> <span class="kw">c</span>(<span class="st">&quot;c&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;r&quot;</span>)</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    ...)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">fitMPT &lt;-<span class="st"> </span><span class="kw">traitMPT</span>(<span class="dt">eqnfile =</span> <span class="st">&quot;2htm.txt&quot;</span>, </a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="dt">data =</span> <span class="st">&quot;data_ind.csv&quot;</span>,   </a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="dt">covData =</span> <span class="st">&quot;data_covariates.csv&quot;</span>, </a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="dt">predStructure =</span> <span class="kw">list</span>(<span class="st">&quot;Do ; factor1&quot;</span>, </a>
+<a class="sourceLine" id="cb2-5" title="5">                         <span class="st">&quot;Dn ; factor2&quot;</span>), <span class="co"># discrete factors</span></a>
+<a class="sourceLine" id="cb2-6" title="6">    <span class="dt">predType =</span> <span class="kw">c</span>(<span class="st">&quot;c&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;f&quot;</span>, <span class="st">&quot;r&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" title="7">    ...)</a></code></pre></div>
 <p>Estimated group estimates for each parameter can be obtained by</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">getGroupMeans</span>(fitMPT)</a></code></pre></div>
-<p>Multiple factors can in principle be included, but currently it is not possible to include interactions. For an introduction to Bayesian ANOVA, see Rouder et al. (2012).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">getGroupMeans</span>(fitMPT)</a></code></pre></div>
+<p>Multiple factors can in principle be included, but currently it is not possible to include interactions. For an introduction to Bayesian ANOVA, see Rouder et al. (2012).</p>
 </div>
 <div id="c-sampling-transformed-parameters" class="section level3">
 <h3>C) Sampling Transformed Parameters</h3>
 <p>The argument <code>transformedParameters</code> allows to sample parameters that result as some determinstic function of the estimated MPT parameters. This is helpful to test differences between two core MPT parameters or obtain reparameterized versions of the parameters (e.g., for testing order constraints). For instance, the difference between two MPT parameters can be computed using</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">transformedParameters =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;deltaG = G_1-G_2&quot;</span>,     <span class="co"># difference of parameters</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">                             <span class="st">&quot;G1_larger = G_1&gt;G_2&quot;</span>)  <span class="co"># Bayesian p-value / testing order constraints</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">transformedParameters =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;deltaG = G_1-G_2&quot;</span>,     <span class="co"># difference of parameters</span></a>
+<a class="sourceLine" id="cb4-2" title="2">                             <span class="st">&quot;G1_larger = G_1&gt;G_2&quot;</span>)  <span class="co"># Bayesian p-value / testing order constraints</span></a></code></pre></div>
 <p>If the parameters are different, the 95% posterior interval of the parameter <code>deltaG</code> should exclude zero.</p>
 <p>Transformed parameters are also helpful if the model contains reparameterizations of order constraints. For instance, if <span class="math inline">\(a&lt;b\)</span> is replaced by <span class="math inline">\(a = s_a * b\)</span> (the standard procedure in multiTree), the EQN file includes the parameters <code>b</code> and <code>s_a</code>, but the interest is in <code>a</code>, which can be obtained by <code>transformedParameters = list(&quot;a = s_a * b&quot;)</code> . However, note that the priors need to be adjusted in case of such reparameterizations (Heck &amp; Wagenmakers, 2016).</p>
 <p>Note the following about the correct specification of transformed parameters:</p>
@@ -378,26 +378,29 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="d-generate-simulated-data-sets" class="section level3">
 <h3>D) Generate Simulated Data Sets</h3>
 <p>Simulated data sets are in general useful to check the robustness of the estimators and the sample size requirements. TreeBUGS includes functions to generate data sets of individual frequencies for both the Beta-MPT and the latent-trait MPT model.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># beta-MPT</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">genBeta &lt;-<span class="st"> </span><span class="kw">genBetaMPT</span>(</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">              <span class="dt">N =</span> <span class="dv">100</span>,                            <span class="co"># number of participants     </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">              <span class="dt">numItems =</span> <span class="kw">c</span>(<span class="dt">Target=</span><span class="dv">250</span>, <span class="dt">Lure=</span><span class="dv">250</span>), <span class="co"># number of responses per tree</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">              <span class="dt">eqnfile =</span> <span class="st">&quot;2htm.eqn&quot;</span>,               <span class="co"># path to MPT file</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">              <span class="dt">mean =</span> <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">7</span>, <span class="dt">Dn=</span>.<span class="dv">7</span>, <span class="dt">g=</span>.<span class="dv">5</span>),       <span class="co"># true group-level parameters</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">              <span class="dt">sd =</span>   <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">1</span>, <span class="dt">Dn=</span>.<span class="dv">1</span>, <span class="dt">g=</span>.<span class="dv">05</span>))      <span class="co"># SD of individual parameters</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># latent-trait MPT</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">genTrait &lt;-<span class="st"> </span><span class="kw">genTraitMPT</span>(</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">              <span class="dt">N =</span> <span class="dv">100</span>,                             <span class="co"># number of participants     </span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">              <span class="dt">numItems =</span> <span class="kw">c</span>(<span class="dt">Target=</span><span class="dv">250</span>, <span class="dt">Lure=</span><span class="dv">250</span>),  <span class="co"># number of responses per tree</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">              <span class="dt">eqnfile =</span> <span class="st">&quot;2htm.eqn&quot;</span>,                <span class="co"># path to MPT file</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">              <span class="dt">mean =</span> <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">7</span>, <span class="dt">Dn=</span>.<span class="dv">7</span>, <span class="dt">g=</span>.<span class="dv">5</span>),        <span class="co"># true group-level parameters</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">              <span class="dt">sigma =</span>   <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">25</span>, <span class="dt">Dn=</span>.<span class="dv">25</span>, <span class="dt">g=</span>.<span class="dv">05</span>),  <span class="co"># SD of latent (!) individual parameters</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">              <span class="dt">rho =</span> <span class="kw">diag</span>(<span class="dv">3</span>))                       <span class="co"># correlation matrix. here: no correlation</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># beta-MPT</span></a>
+<a class="sourceLine" id="cb5-2" title="2">genBeta &lt;-<span class="st"> </span><span class="kw">genBetaMPT</span>(</a>
+<a class="sourceLine" id="cb5-3" title="3">              <span class="dt">N =</span> <span class="dv">100</span>,                            <span class="co"># number of participants     </span></a>
+<a class="sourceLine" id="cb5-4" title="4">              <span class="dt">numItems =</span> <span class="kw">c</span>(<span class="dt">Target=</span><span class="dv">250</span>, <span class="dt">Lure=</span><span class="dv">250</span>), <span class="co"># number of responses per tree</span></a>
+<a class="sourceLine" id="cb5-5" title="5">              <span class="dt">eqnfile =</span> <span class="st">&quot;2htm.eqn&quot;</span>,               <span class="co"># path to MPT file</span></a>
+<a class="sourceLine" id="cb5-6" title="6">              <span class="dt">mean =</span> <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">7</span>, <span class="dt">Dn=</span>.<span class="dv">7</span>, <span class="dt">g=</span>.<span class="dv">5</span>),       <span class="co"># true group-level parameters</span></a>
+<a class="sourceLine" id="cb5-7" title="7">              <span class="dt">sd =</span>   <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">1</span>, <span class="dt">Dn=</span>.<span class="dv">1</span>, <span class="dt">g=</span>.<span class="dv">05</span>))      <span class="co"># SD of individual parameters</span></a>
+<a class="sourceLine" id="cb5-8" title="8"></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co"># latent-trait MPT</span></a>
+<a class="sourceLine" id="cb5-10" title="10">genTrait &lt;-<span class="st"> </span><span class="kw">genTraitMPT</span>(</a>
+<a class="sourceLine" id="cb5-11" title="11">              <span class="dt">N =</span> <span class="dv">100</span>,                             <span class="co"># number of participants     </span></a>
+<a class="sourceLine" id="cb5-12" title="12">              <span class="dt">numItems =</span> <span class="kw">c</span>(<span class="dt">Target=</span><span class="dv">250</span>, <span class="dt">Lure=</span><span class="dv">250</span>),  <span class="co"># number of responses per tree</span></a>
+<a class="sourceLine" id="cb5-13" title="13">              <span class="dt">eqnfile =</span> <span class="st">&quot;2htm.eqn&quot;</span>,                <span class="co"># path to MPT file</span></a>
+<a class="sourceLine" id="cb5-14" title="14">              <span class="dt">mean =</span> <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">7</span>, <span class="dt">Dn=</span>.<span class="dv">7</span>, <span class="dt">g=</span>.<span class="dv">5</span>),        <span class="co"># true group-level parameters</span></a>
+<a class="sourceLine" id="cb5-15" title="15">              <span class="dt">sigma =</span>   <span class="kw">c</span>(<span class="dt">Do=</span>.<span class="dv">25</span>, <span class="dt">Dn=</span>.<span class="dv">25</span>, <span class="dt">g=</span>.<span class="dv">05</span>),  <span class="co"># SD of latent (!) individual parameters</span></a>
+<a class="sourceLine" id="cb5-16" title="16">              <span class="dt">rho =</span> <span class="kw">diag</span>(<span class="dv">3</span>))                       <span class="co"># correlation matrix. here: no correlation</span></a></code></pre></div>
 <p>The resulting data sets contain both the generated frequencies (<code>genTrait$data</code>) and the data-generating group and individual parameters (<code>genTrait$parameters</code>)</p>
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

@@ -1,4 +1,4 @@
-## ---- eval=F-------------------------------------------------------------
+## ---- eval=F------------------------------------------------------------------
 #  fitMPT <- traitMPT(
 #      eqnfile = "2htm.txt",
 #      data = "data_ind.csv",
@@ -8,7 +8,7 @@
 #      predStructure = list("Do ; IQ"), # IQ as predictor for Do=Dn
 #      ...)
 
-## ---- eval=F-------------------------------------------------------------
+## ---- eval=F------------------------------------------------------------------
 #  fitMPT <- traitMPT(eqnfile = "2htm.txt",
 #      data = "data_ind.csv",
 #      covData = "data_covariates.csv",
@@ -17,14 +17,14 @@
 #      predType = c("c", "c", "f", "r")
 #      ...)
 
-## ---- eval=F-------------------------------------------------------------
+## ---- eval=F------------------------------------------------------------------
 #  getGroupMeans(fitMPT)
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  transformedParameters = list("deltaG = G_1-G_2",     # difference of parameters
 #                               "G1_larger = G_1>G_2")  # Bayesian p-value / testing order constraints
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  # beta-MPT
 #  genBeta <- genBetaMPT(
 #                N = 100,                            # number of participants

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <meta name="author" content="Daniel W. Heck, Nina R. Arnold, &amp; Denis Arnold" />
 
-<meta name="date" content="2019-04-04" />
+<meta name="date" content="2019-12-04" />
 
 <title>TreeBUGS: Introduction to Hierarchical MPT Modeling</title>
 
@@ -37,7 +37,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -96,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -303,7 +303,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">TreeBUGS: Introduction to Hierarchical MPT Modeling</h1>
 <h4 class="author">Daniel W. Heck, Nina R. Arnold, &amp; Denis Arnold</h4>
-<h4 class="date">2019-04-04</h4>
+<h4 class="date">2019-12-04</h4>
 
 
 
@@ -330,11 +330,11 @@ Lure      FA     (1-Dn)*g
 Lure      CR     (1-Dn)*(1-g)
 Lure      CR     Dn</code></pre>
 <p>Note that category labels (e.g., hit, miss,…) must start with a letter (different to multiTree or HMMTree) and match the column names of . The model equations require the multiplication sign <code>*</code> and parameters should not be summarized, e.g., by <code>a^2*(1-a)</code>. As an input for TreeBUGS, the model file (e.g., <code>&quot;2htm.txt&quot;</code>) needs to be saved in the current working directory. Otherwise, the relative or absolute path to the file must be specified (e.g., <code>models/2htm.txt</code>). To check how TreeBUGS interprets a given .eqn-file, use:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">readEQN</span>(<span class="dt">file =</span> <span class="st">&quot;pathToFile.eqn&quot;</span>,       <span class="co"># relative or absolute path </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">        <span class="dt">restrictions =</span> <span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>),  <span class="co"># equality constraints</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">        <span class="dt">paramOrder =</span> <span class="ot">TRUE</span>)             <span class="co"># show parameter order</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">readEQN</span>(<span class="dt">file =</span> <span class="st">&quot;pathToFile.eqn&quot;</span>,       <span class="co"># relative or absolute path </span></a>
+<a class="sourceLine" id="cb2-2" title="2">        <span class="dt">restrictions =</span> <span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>),  <span class="co"># equality constraints</span></a>
+<a class="sourceLine" id="cb2-3" title="3">        <span class="dt">paramOrder =</span> <span class="ot">TRUE</span>)             <span class="co"># show parameter order</span></a></code></pre></div>
 <p>Equality restrictions on the MPT parameters can either be provided in a list:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">restrictions =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>, <span class="st">&quot;g=0.5&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">restrictions =<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>, <span class="st">&quot;g=0.5&quot;</span>)</a></code></pre></div>
 <p>or by a path to a text file on the hard drive (e.g., <code>restrictions=&quot;pathToFile.txt&quot;</code>) that contains the equality constraints, one per row:</p>
 <pre><code>Dn=Do
 g=0.5</code></pre>
@@ -354,37 +354,37 @@ g=0.5</code></pre>
 <div id="step-fit-hierarchical-mpt-model" class="section level3">
 <h3>3. Step: Fit Hierarchical MPT Model</h3>
 <p>An hierarchical <strong>Beta-MPT model</strong> is fitted with the following code:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># load the package:</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">library</span>(TreeBUGS)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># fit the model:</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">fitHierarchicalMPT &lt;-<span class="st"> </span><span class="kw">betaMPT</span>(</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">      <span class="dt">eqnfile=</span><span class="st">&quot;2htm.txt&quot;</span>,         <span class="co"># .eqn file</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">      <span class="dt">data=</span><span class="st">&quot;data_ind.csv&quot;</span>,        <span class="co"># individual data</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">      <span class="dt">restrictions=</span><span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>), <span class="co"># parameter restrictions (or path to file)</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">      </a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">      <span class="co">### optional MCMC input:            </span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">      <span class="dt">n.iter =</span> <span class="dv">20000</span>,             <span class="co"># number of iterations</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">      <span class="dt">n.burnin =</span> <span class="dv">5000</span>,            <span class="co"># number of burnin samples that are removed</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">      <span class="dt">n.thin =</span> <span class="dv">5</span>,                 <span class="co"># thinning rate of removing samples</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">      <span class="dt">n.chains =</span> <span class="dv">3</span>                <span class="co"># number of MCMC chains (run in parallel)</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># load the package:</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">library</span>(TreeBUGS)</a>
+<a class="sourceLine" id="cb6-3" title="3"></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co"># fit the model:</span></a>
+<a class="sourceLine" id="cb6-5" title="5">fitHierarchicalMPT &lt;-<span class="st"> </span><span class="kw">betaMPT</span>(</a>
+<a class="sourceLine" id="cb6-6" title="6">      <span class="dt">eqnfile=</span><span class="st">&quot;2htm.txt&quot;</span>,         <span class="co"># .eqn file</span></a>
+<a class="sourceLine" id="cb6-7" title="7">      <span class="dt">data=</span><span class="st">&quot;data_ind.csv&quot;</span>,        <span class="co"># individual data</span></a>
+<a class="sourceLine" id="cb6-8" title="8">      <span class="dt">restrictions=</span><span class="kw">list</span>(<span class="st">&quot;Dn=Do&quot;</span>), <span class="co"># parameter restrictions (or path to file)</span></a>
+<a class="sourceLine" id="cb6-9" title="9">      </a>
+<a class="sourceLine" id="cb6-10" title="10">      <span class="co">### optional MCMC input:            </span></a>
+<a class="sourceLine" id="cb6-11" title="11">      <span class="dt">n.iter =</span> <span class="dv">20000</span>,             <span class="co"># number of iterations</span></a>
+<a class="sourceLine" id="cb6-12" title="12">      <span class="dt">n.burnin =</span> <span class="dv">5000</span>,            <span class="co"># number of burnin samples that are removed</span></a>
+<a class="sourceLine" id="cb6-13" title="13">      <span class="dt">n.thin =</span> <span class="dv">5</span>,                 <span class="co"># thinning rate of removing samples</span></a>
+<a class="sourceLine" id="cb6-14" title="14">      <span class="dt">n.chains =</span> <span class="dv">3</span>                <span class="co"># number of MCMC chains (run in parallel)</span></a>
+<a class="sourceLine" id="cb6-15" title="15">)</a></code></pre></div>
 <p>A latent-trait model is fitted similarly by replacing <code>betaMPT</code> by <code>traitMPT</code>.</p>
 </div>
 <div id="step-check-convergence-of-mcmc-chains" class="section level3">
 <h3>4. Step: Check convergence of MCMC chains</h3>
 <p>The functions <code>betaMPT</code> and <code>traitMPT</code> return a list that includes the original samples from the MCMC sampler for convergence checks. The MCMC samples are stored in <code>fittedModel$runjags$mcmc</code> as an <code>mcmc.list</code> object (see the package  for an overview of convergence diagniostics). TreeBUGS provides a handy wrapper to access the most important plotting functions:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Default: Traceplot and density</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">plot</span>(fitHierarchicalMPT,    <span class="co"># fitted model</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">     <span class="dt">parameter =</span><span class="st">&quot;mean&quot;</span>      <span class="co"># which parameter to plot</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># further arguments are passed to ?plot.mcmc.list</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co"># Auto-correlation plots:</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="kw">plot</span>(fitHierarchicalMPT,  <span class="dt">parameter =</span> <span class="st">&quot;mean&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;acf&quot;</span>)</a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co"># Gelman-Rubin plots:</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="kw">plot</span>(fitHierarchicalMPT,  <span class="dt">parameter =</span> <span class="st">&quot;mean&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;gelman&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># Default: Traceplot and density</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">plot</span>(fitHierarchicalMPT,    <span class="co"># fitted model</span></a>
+<a class="sourceLine" id="cb7-3" title="3">     <span class="dt">parameter =</span><span class="st">&quot;mean&quot;</span>      <span class="co"># which parameter to plot</span></a>
+<a class="sourceLine" id="cb7-4" title="4">)</a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co"># further arguments are passed to ?plot.mcmc.list</span></a>
+<a class="sourceLine" id="cb7-6" title="6"></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co"># Auto-correlation plots:</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="kw">plot</span>(fitHierarchicalMPT,  <span class="dt">parameter =</span> <span class="st">&quot;mean&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;acf&quot;</span>)</a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co"># Gelman-Rubin plots:</span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="kw">plot</span>(fitHierarchicalMPT,  <span class="dt">parameter =</span> <span class="st">&quot;mean&quot;</span>, <span class="dt">type =</span> <span class="st">&quot;gelman&quot;</span>)</a></code></pre></div>
 <p>See  and  for further convergence statistics and plots. Note that inferences from the model can be invalid if the Markov-Chain Monte-Carlo (MCMC) sampler did not converge!</p>
 </div>
 <div id="step-summarize-and-plot-results" class="section level3">
@@ -395,25 +395,25 @@ g=0.5</code></pre>
 <li>Convergence: <span class="math inline">\(\hat R\)</span>-Statistic (should be close to 1.00 for all parameters, e.g., <span class="math inline">\(\hat R &lt; 1.05\)</span>) and number of effective samples when accounting for auto-correlation (should be large)</li>
 </ul>
 <p>To obtain the summary after fitting the model, simply use:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">summary</span>(fitHierarchicalMPT)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">summary</span>(fitHierarchicalMPT)</a></code></pre></div>
 <p>The following functions allow to plot parameter estimates, distributions, goodness of fit, and raw frequencies:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">plotParam</span>(fitHierarchicalMPT,     <span class="co"># estimated parameters</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">          <span class="dt">includeIndividual=</span><span class="ot">TRUE</span>  <span class="co"># whether to plot individual estimates</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">plotDistribution</span>(fitHierarchicalMPT)      <span class="co"># estimated hierarchical parameter distribution</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">plotFit</span>(fitHierarchicalMPT)               <span class="co"># observed vs. predicted mean frequencies</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw">plotFit</span>(fitHierarchicalMPT, <span class="dt">stat =</span> <span class="st">&quot;cov&quot;</span>) <span class="co"># observed vs. predicted covariance</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="kw">plotFreq</span>(fitHierarchicalMPT)              <span class="co"># individual and mean raw frequencies per tree</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw">plotPriorPost</span>(fitHierarchicalMPT)         <span class="co"># comparison of prior/posterior (group level parameters)</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">plotParam</span>(fitHierarchicalMPT,     <span class="co"># estimated parameters</span></a>
+<a class="sourceLine" id="cb9-2" title="2">          <span class="dt">includeIndividual=</span><span class="ot">TRUE</span>  <span class="co"># whether to plot individual estimates</span></a>
+<a class="sourceLine" id="cb9-3" title="3">)</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="kw">plotDistribution</span>(fitHierarchicalMPT)      <span class="co"># estimated hierarchical parameter distribution</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="kw">plotFit</span>(fitHierarchicalMPT)               <span class="co"># observed vs. predicted mean frequencies</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="kw">plotFit</span>(fitHierarchicalMPT, <span class="dt">stat =</span> <span class="st">&quot;cov&quot;</span>) <span class="co"># observed vs. predicted covariance</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="kw">plotFreq</span>(fitHierarchicalMPT)              <span class="co"># individual and mean raw frequencies per tree</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="kw">plotPriorPost</span>(fitHierarchicalMPT)         <span class="co"># comparison of prior/posterior (group level parameters)</span></a></code></pre></div>
 <p>Parameter estimates (posterior mean, median, SD) can be extracted and saved to a file by using:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># matrix for further use within R:</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">tt &lt;-<span class="st"> </span><span class="kw">getParam</span>(fitHierarchicalMPT, <span class="dt">parameter=</span><span class="st">&quot;theta&quot;</span>, </a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">               <span class="dt">stat=</span><span class="st">&quot;mean&quot;</span>)</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">tt</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co"># save complete summary of individual estimates to file:</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="kw">getParam</span>(fitHierarchicalMPT, <span class="dt">parameter =</span> <span class="st">&quot;theta&quot;</span>, </a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">         <span class="dt">stat =</span> <span class="st">&quot;summary&quot;</span>, <span class="dt">file =</span> <span class="st">&quot;parameter.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># matrix for further use within R:</span></a>
+<a class="sourceLine" id="cb10-2" title="2">tt &lt;-<span class="st"> </span><span class="kw">getParam</span>(fitHierarchicalMPT, <span class="dt">parameter=</span><span class="st">&quot;theta&quot;</span>, </a>
+<a class="sourceLine" id="cb10-3" title="3">               <span class="dt">stat=</span><span class="st">&quot;mean&quot;</span>)</a>
+<a class="sourceLine" id="cb10-4" title="4">tt</a>
+<a class="sourceLine" id="cb10-5" title="5"></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co"># save complete summary of individual estimates to file:</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="kw">getParam</span>(fitHierarchicalMPT, <span class="dt">parameter =</span> <span class="st">&quot;theta&quot;</span>, </a>
+<a class="sourceLine" id="cb10-8" title="8">         <span class="dt">stat =</span> <span class="st">&quot;summary&quot;</span>, <span class="dt">file =</span> <span class="st">&quot;parameter.csv&quot;</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="references" class="section level2">
@@ -428,6 +428,9 @@ g=0.5</code></pre>
 </ul>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
