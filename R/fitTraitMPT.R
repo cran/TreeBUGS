@@ -11,6 +11,9 @@
 #'     by a semicolon, e.g., \code{Do g; age extraversion}). Can also be provided
 #'     as a list, e.g., \code{list("Do Dn ; age", "g ; extraversion"}).
 #'     Note that no correlations of MPT parameters and predictors are computed.
+#'     However, for continuous covariates, the standardized slope parameters
+#'     \code{slope_std_parameter_predictor} can be interpreted as a correlation
+#'     if a single predictor is included for the corresponding MPT parameter.
 #' @param predType a character vector specifying the type of continuous or
 #'     discrete predictors in each column of \code{covData}:
 #'     \code{"c"} = continuous covariate (which are centered to have a mean of zero);
@@ -107,10 +110,6 @@
 #' Gelman, A. (2006). Prior distributions for variance parameters in hierarchical models
 #' (comment on article by Browne and Draper).
 #' \emph{Bayesian Analysis, 1}, 515-534.
-#'
-#' Heck, D. W., Arnold, N. R., & Arnold, D. (2018).
-#' TreeBUGS: An R package for hierarchical multinomial-processing-tree modeling.
-#' \emph{Behavior Research Methods, 50}, 264–284.
 #'
 #' Klauer, K. C. (2010). Hierarchical multinomial processing tree models: A latent-trait approach.
 #' \emph{Psychometrika, 75}, 70-98.
