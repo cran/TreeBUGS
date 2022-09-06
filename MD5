@@ -1,6 +1,6 @@
-d1729db200560c9426d803e8c7524640 *DESCRIPTION
+0ceac827fbfcfbf0737c5179a81b4791 *DESCRIPTION
 3fa00250d852b6448149384b6289c8a8 *NAMESPACE
-4382ab75f3e9f554430b38e7cd9efc98 *NEWS
+b3b5532f4a131eb3bb6a4a8743acd468 *NEWS
 4b6f373fcf200a98b8bc00353c9d767d *R/BF_Rao_Blackwell.R
 404870f1f206e5ccacc99086148eb0f9 *R/BF_auxiliary.R
 f8747c405b2e8c8acec04c9d84692a40 *R/BF_likelihoods.R
@@ -10,7 +10,7 @@ ff4ee3fce7c5db5d35030f6a3de64ab8 *R/CollectionOfInputProcessingFunctions.R
 1053f598a5575418ae0c40001e3514cf *R/PPP.R
 b373dbe00b31c47ca8d715d93d887d29 *R/RcppExports.R
 e4fdbad8101cbda0c537a707a92395ee *R/T1perGroup.R
-580ced155df2d4e7219d1ce148135e4d *R/TreeBUGS-package.R
+71e07ffc7a11b76d4376fb5509cb192f *R/TreeBUGS-package.R
 47f0528f3dbf9a8bdb32c1f601d4f8cc *R/WAIC.R
 44f07f426fc983e287877c89b32f4452 *R/arnold2013.R
 2028a52eb7d9fd03b978b88eaf785010 *R/betweenSubjects.R
@@ -75,14 +75,14 @@ f4eb373bf0db31ac3a40806e734938d2 *inst/doc/Heck_2018_BRM.pdf
 ac3fa030761c52a63ae1195498a032dd *inst/doc/Heck_2018_BRM.pdf.asis
 970d22de09fee4d36505f38b73aed874 *inst/doc/TreeBUGS_1_intro.R
 3079801a521d6c390174001a7f949a04 *inst/doc/TreeBUGS_1_intro.Rmd
-fcdf9bc7a91e5fb5bb686d34aa1762ea *inst/doc/TreeBUGS_1_intro.html
+e90169324569e5a7549027b5fb91ac8c *inst/doc/TreeBUGS_1_intro.html
 64193aadfd9f5fbfcecd54469b0e34c0 *inst/doc/TreeBUGS_2_extended.R
 d88d1957d42521bf627c83f484b1a450 *inst/doc/TreeBUGS_2_extended.Rmd
-fe4da836ca29e55ebd4eceb6ed9f3a3b *inst/doc/TreeBUGS_2_extended.html
+4377501e0b5136dbc23ba47e7d0aa46f *inst/doc/TreeBUGS_2_extended.html
 329619edbd51577ee2f3cb451e57fe50 *man/BayesFactorMPT.Rd
 b47f5c6a0692179c5e7e00829caf6354 *man/BayesFactorSlope.Rd
 013fd15ab3a65a17de60f14ab2335d95 *man/PPP.Rd
-1280e10dc1c85a926f444e7343be8d50 *man/TreeBUGS-package.Rd
+93dc6da1f1101632c4e0faec88a9270b *man/TreeBUGS-package.Rd
 ee2fa50f6e2bfe80f903e61f78c22fce *man/WAIC.Rd
 a69a3d55886063a2a524df6056593125 *man/arnold2013.Rd
 9bc097e939e66b382480f86fc3a409ac *man/betaMPT.Rd
@@ -119,7 +119,7 @@ a1c1e67569b8b1bb6568b6a6057032a2 *man/transformedParameters.Rd
 522cdbe6e6f0b693499f4729428738c3 *man/withinSubjectEQN.Rd
 2a6f9e9e044a78154d3cfda5936d6f48 *src/Makevars
 3a214e4bac0fbfc890f786b98b7af501 *src/RcppExports.cpp
-e8d98d0c4b46e78992bc11878ea28a68 *src/betaMPT.cpp
+c101c2e38a168d67bf55ebe44c928a2b *src/betaMPT.cpp
 36fb7d6cbcb3b4a848fb1b0586803b07 *src/init.c
 a34ce7c6b1a02949b611b62fceeca759 *src/loglikMPT.cpp
 3cd4ae2b745a244c81a09946f6d340fe *tests/testthat.R
