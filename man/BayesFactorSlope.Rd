@@ -14,48 +14,55 @@ BayesFactorSlope(
 )
 }
 \arguments{
-\item{fittedModel}{a fitted latent-trait model fitted with \code{\link{traitMPT}}
-with predictor variables that have been defined via \code{predStructure}.}
+\item{fittedModel}{a fitted latent-trait model fitted with
+\code{\link{traitMPT}} with predictor variables that have been defined via
+\code{predStructure}.}
 
-\item{parameter}{name of the slope parameter (e.g., \code{"slope_d_covariate"}).}
+\item{parameter}{name of the slope parameter (e.g.,
+\code{"slope_d_covariate"}).}
 
 \item{direction}{alternative hypothesis: whether slope is smaller or larger
 than zero (\code{"<"} or \code{">"}) or unequal to zero (\code{"!="}).}
 
-\item{approx}{how to approximate the posterior density of the slope parameter at zero:
-\code{approx="normal"} uses a normal approximation to all samples and \code{approx="logspline"}
-uses a nonparametric density estimate of the package \link[logspline]{logspline}.
-Usually, both methods provide similar results.}
+\item{approx}{how to approximate the posterior density of the slope parameter
+at zero: \code{approx="normal"} uses a normal approximation to all samples
+and \code{approx="logspline"} uses a nonparametric density estimate of the
+package \link[logspline]{logspline}. Usually, both methods provide similar
+results.}
 
-\item{plot}{if \code{TRUE}, the prior and posterior densities and the ratio at slope=0 are plotted.}
+\item{plot}{if \code{TRUE}, the prior and posterior densities and the ratio
+at slope=0 are plotted.}
 
-\item{...}{further arguments passed to \code{\link[logspline]{logspline}}, which is used to
-approximate the density of the posterior distribution.}
+\item{...}{further arguments passed to \code{\link[logspline]{logspline}},
+which is used to approximate the density of the posterior distribution.}
 }
 \description{
 Uses the Savage-Dickey method to compute the Bayes factor that the slope
-parameter of a continuous covariate in \code{\link{traitMPT}} is
-zero vs. positive/negative/unequal to zero.
+parameter of a continuous covariate in \code{\link{traitMPT}} is zero vs.
+positive/negative/unequal to zero.
 }
 \details{
-The Bayes factor is computed with the Savage-Dickey method, which is defined as the ratio of the
-density of the posterior and the density of the prior evaluated at \code{slope=0} (Heck, 2019).
-Note that this method cannot be used with default JZS priors (\code{IVprec="dgamma(.5,.5)"})
-if more than one predictor is added for an MPT parameter.
-As a remedy, a g-prior (normal distribution) can be used on the slopes by
-setting the hyperprior parameter \eqn{g} to a fixed constant when fitting
-the model: \code{traitMPT(..., IVprec = 1)} (see Heck, 2019).
+The Bayes factor is computed with the Savage-Dickey method, which is
+defined as the ratio of the density of the posterior and the density of the
+prior evaluated at \code{slope=0} (Heck, 2019). Note that this method cannot
+be used with default JZS priors (\code{IVprec="dgamma(.5,.5)"}) if more than
+one predictor is added for an MPT parameter. As a remedy, a g-prior (normal
+distribution) can be used on the slopes by setting the hyperprior parameter
+\eqn{g} to a fixed constant when fitting the model: \code{traitMPT(...,
+IVprec = 1)} (see Heck, 2019).
 }
 \examples{
 \dontrun{
 # latent-trait MPT model for the encoding condition (see ?arnold2013):
-EQNfile <- system.file("MPTmodels/2htsm.eqn", package="TreeBUGS")
+EQNfile <- system.file("MPTmodels/2htsm.eqn", package = "TreeBUGS")
 d.enc <- subset(arnold2013, group == "encoding")
 
-fit <- traitMPT(EQNfile, data = d.enc[, -(1:4)], n.thin=5,
-                restrictions=list("D1=D2=D3","d1=d2","a=g"),
-                covData = d.enc[,c("age", "pc")],
-                predStructure = list("D1 ; age"))
+fit <- traitMPT(EQNfile,
+  data = d.enc[, -(1:4)], n.thin = 5,
+  restrictions = list("D1=D2=D3", "d1=d2", "a=g"),
+  covData = d.enc[, c("age", "pc")],
+  predStructure = list("D1 ; age")
+)
 plot(fit, parameter = "slope", type = "default")
 summary(fit)
 
@@ -64,7 +71,7 @@ BayesFactorSlope(fit, "slope_D1_age", direction = "<")
 }
 \references{
 Heck, D. W. (2019). A caveat on the Savage-Dickey density ratio:
-The case of computing Bayes factors for regression parameters.
-\emph{British Journal of Mathematical and Statistical Psychology, 72},
-316–333. \doi{10.1111/bmsp.12150}
+The case of computing Bayes factors for regression parameters. \emph{British
+Journal of Mathematical and Statistical Psychology, 72}, 316–333.
+\doi{10.1111/bmsp.12150}
 }
